@@ -61,9 +61,9 @@ node {
 
     
     stage('CreateAndUpdateAPI'){
-			def ACTION = "${ACTION}"
+			def api_status = "${ACTION}"
 			
-                        if( ACTION == 'New') {	
+                        if( api_status == 'New') {	
 				sh '''echo "**********************************************       Creating clientId and cleintSecret for ADMIN"
 				cid=$(curl -k -X POST -H "Authorization: Basic YWRtaW46YWRtaW4=" -H "Content-Type: application/json" -d @payload.json https://localhost:9443/client-registration/v0.11/register | jq -r \'.clientId\')
 				cs=$(curl -k -X POST -H "Authorization: Basic YWRtaW46YWRtaW4=" -H "Content-Type: application/json" -d @payload.json https://localhost:9443/client-registration/v0.11/register | jq -r \'.clientSecret\')
@@ -90,7 +90,7 @@ node {
 				'''
                         }
 
-                        if( ACTION == 'Update') {	
+                        if( api_status == 'Update') {	
 				sh '''echo "**********************************************       Creating clientId and cleintSecret for ADMIN"
 				cid=$(curl -k -X POST -H "Authorization: Basic YWRtaW46YWRtaW4=" -H "Content-Type: application/json" -d @payload.json https://localhost:9443/client-registration/v0.11/register | jq -r \'.clientId\')
 				cs=$(curl -k -X POST -H "Authorization: Basic YWRtaW46YWRtaW4=" -H "Content-Type: application/json" -d @payload.json https://localhost:9443/client-registration/v0.11/register | jq -r \'.clientSecret\')
@@ -122,7 +122,7 @@ node {
                         }
 
 
-                        if( ACTION == 'Delete') {	
+                        if( api_status == 'Delete') {	
 				sh '''echo "**********************************************       Deleting API ${delApi}"    
 				cid=$(curl -k -X POST -H "Authorization: Basic YWRtaW46YWRtaW4=" -H "Content-Type: application/json" -d @payload.json https://localhost:9443/client-registration/v0.11/register | jq -r \'.clientId\')
 				cs=$(curl -k -X POST -H "Authorization: Basic YWRtaW46YWRtaW4=" -H "Content-Type: application/json" -d @payload.json https://localhost:9443/client-registration/v0.11/register | jq -r \'.clientSecret\')
