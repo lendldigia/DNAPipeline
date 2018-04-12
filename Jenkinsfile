@@ -3,8 +3,6 @@ import groovy.json.JsonSlurper
 import groovy.json.JsonBuilder
 import groovy.json.JsonOutput 
 
-srcDir = '/JSONFiles'
-
 node {
     stage('Checkout'){
       checkout scm
@@ -72,14 +70,14 @@ node {
 				tokenCreate=$(curl -k -d "grant_type=password&username=admin&password=admin&scope=apim:api_create" -H "Authorization: Basic $encodeClient" https://localhost:8243/token | jq -r \'.access_token\')
 
 				echo "**************************      CREATING API      ******************************"
-				curl -k -H "Authorization: Bearer $tokenCreate" -H "Content-Type: application/json" -X POST -d @${WORKSPACE}"/JSONFiles/${APP_NAME}.json" https://localhost:9443/api/am/publisher/v0.11/apis
+				curl -k -H "Authorization: Bearer $tokenCreate" -H "Content-Type: application/json" -X POST -d @${WORKSPACE}"/${APP_NAME}.json" https://localhost:9443/api/am/publisher/v0.11/apis
 				echo "**************************      API CREATED    ******************************"
 				
 				echo "**************************      PUBLISHING API      ******************************"
 				tokenView=$(curl -k -d "grant_type=password&username=admin&password=admin&scope=apim:api_view" -H "Authorization: Basic $encodeClient" https://localhost:8243/token | jq -r \'.access_token\')
 				tokenPublish=$(curl -k -d "grant_type=password&username=admin&password=admin&scope=apim:api_publish" -H "Authorization: Basic $encodeClient" https://localhost:8243/token | jq -r \'.access_token\')
 				apisList=$(curl -k -H "Authorization: Bearer $tokenView" https://localhost:9443/api/am/publisher/v0.11/apis | jq \'.list\' | jq  \'.[] | {id: .id , name: .name , context: .context , version: .version}\' )
-				createFile=`jq \'{name: .name , context: .context , version: .version}\' ${WORKSPACE}"/JSONFiles/${APP_NAME}.json"`
+				createFile=`jq \'{name: .name , context: .context , version: .version}\' ${WORKSPACE}"/${APP_NAME}.json"`
 				newName="$(echo $createFile | jq -r \'.name\')"
 				newContext="$(echo $createFile | jq -r \'.context\')"
 				newVersion="$(echo $createFile | jq -r \'.version\')"
@@ -101,7 +99,7 @@ node {
 
 				apisList=$(curl -k -H "Authorization: Bearer $tokenView" https://localhost:9443/api/am/publisher/v0.11/apis | jq \'.list\' | jq  \'.[] | {id: .id , name: .name , context: .context , version: .version}\' )
 
-				createFile=`jq \'{name: .name , context: .context , version: .version}\' ${WORKSPACE}"/JSONFiles/${APP_NAME}.json"`
+				createFile=`jq \'{name: .name , context: .context , version: .version}\' ${WORKSPACE}"/${APP_NAME}.json"`
 				newName="$(echo $createFile | jq -r \'.name\')"
 				newContext="$(echo $createFile | jq -r \'.context\')"
 				newVersion="$(echo $createFile | jq -r \'.version\')"
@@ -111,7 +109,7 @@ node {
 				updateId="$(echo $match | jq -r \'.id\')"
 				echo $updateId
 				echo "**************************      EXECUTING UPDATE      ******************************"
-				createFileForUpdate=`jq  -s add updateId.json ${WORKSPACE}"/JSONFiles/${APP_NAME}.json"`
+				createFileForUpdate=`jq  -s add updateId.json ${WORKSPACE}"/${APP_NAME}.json"`
 				
 
 				echo $createFileForUpdate > UpdateAPI.json
@@ -131,7 +129,7 @@ node {
 				tokenView=$(curl -k -d "grant_type=password&username=admin&password=admin&scope=apim:api_view" -H "Authorization: Basic $encodeClient" https://localhost:8243/token | jq -r \'.access_token\')
 				apisList=$(curl -k -H "Authorization: Bearer $tokenView" https://localhost:9443/api/am/publisher/v0.11/apis | jq \'.list\' | jq  \'.[] | {id: .id , name: .name , context: .context , version: .version}\' )
 
-				createFile=`jq \'{name: .name , context: .context , version: .version}\' ${WORKSPACE}"/JSONFiles/${APP_NAME}.json"`
+				createFile=`jq \'{name: .name , context: .context , version: .version}\' ${WORKSPACE}"/${APP_NAME}.json"`
 				newName="$(echo $createFile | jq -r \'.name\')"
 				newContext="$(echo $createFile | jq -r \'.context\')"
 				newVersion="$(echo $createFile | jq -r \'.version\')"
