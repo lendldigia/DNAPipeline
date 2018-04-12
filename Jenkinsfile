@@ -21,12 +21,14 @@ node {
 	wsdlUri="${WSDL_LOC}"
 	endpoint="${ENDPOINT}"
 	env="${TARGET_ENV}"
+	workspace= "${WORKSPACE}"
+	pathToTemplate= workspace + "/APITemplate.json"
 
 	version=env + "-" + ver
 	
       	//println(version);
 
-	def inputFile = new File("/APITemplate.json") 
+	def inputFile = new File(pathToTemplate) 
       	//println template.text
 
 	def jsonSlurper = new JsonSlurper()
