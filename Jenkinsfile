@@ -21,6 +21,7 @@ node {
 	env="${TARGET_ENV}"
 	workspace= "${WORKSPACE}"
 	pathToTemplate= workspace + "/APITemplate.json"
+	pathToNewFile= workspace + name +".json"
 
 	version=env + "-" + ver
 	
@@ -53,7 +54,7 @@ node {
 
 	jsonObject.endpointConfig = endpointString
 	
-	new File(name+".json").write(new JsonBuilder(jsonObject).toPrettyString())
+	new File(pathToNewFile).write(new JsonBuilder(jsonObject).toPrettyString())
 
     }
 
