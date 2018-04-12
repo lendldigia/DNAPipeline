@@ -26,7 +26,7 @@ node {
 	
       	//println(version);
 
-	def inputFile = new File("APITemplate.json") 
+	def inputFile = new File("/APITemplate.json") 
       	//println template.text
 
 	def jsonSlurper = new JsonSlurper()
