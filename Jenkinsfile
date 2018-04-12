@@ -26,11 +26,11 @@ node {
 	
       	//println(version);
 
-	File template = new File("createDEMO.json") 
+	def inputFile = new File("APITemplate.json") 
       	//println template.text
 
 	def jsonSlurper = new JsonSlurper()
-	def jsonObject = jsonSlurper.parseText(template.text)
+	def jsonObject = jsonSlurper.parse(inputFile)
 
 	println "Object.name -> [" + jsonObject.name + "]"
 	jsonObject.name = name
